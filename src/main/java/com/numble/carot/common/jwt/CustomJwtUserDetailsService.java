@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomJwtUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
+    //Error Handling 어쩌지..?
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         User user = userRepository.findById(Long.parseLong(userId)).orElseThrow(() -> new UsernameNotFoundException("해다 유저를 찾을 수 없습니다."));

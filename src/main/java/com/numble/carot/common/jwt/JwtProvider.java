@@ -5,6 +5,9 @@ import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -33,6 +36,7 @@ public class JwtProvider {
         return createToken("refresh", refreshTokenValidityInMilliseconds);
     }
 
+
     private String createToken(String payload, long expireLength) {
         Claims claims = Jwts.claims().setSubject(payload); //"sub" : "data"
         Date now = new Date();
@@ -45,7 +49,8 @@ public class JwtProvider {
                 .compact();
     }
 
-    public String getPayload(String token){
+
+    private String getPayload(String token){
         try{
             return Jwts.parser()
                     .setSigningKey(secretKey)
@@ -67,6 +72,20 @@ public class JwtProvider {
         return null;
     }
 
+    public boolean validateToken(String token){
+        try{
+            Jws<Claims> claimsJws = Jwts.parser()
+                    .setSigningKey(secretKey)
+                    .parseClaimsJws(token);
+            return claimsJws.getBody().getExpiration().before(new Date());
+        }catch (JwtException | IllegalArgumentException exception){
+            return false;
+        }
+    }
 
+    public Authentication getAuthentication(String token){
+        UserDetails userDetails = customJwtUserDetailsService.loadUserByUsername(getPayload(token));
+        return new UsernamePasswordAuthenticationToken(userDetails, "",userDetails.getAuthorities());
+    }
 
 }
