@@ -1,10 +1,7 @@
 package com.numble.carot.common.jwt;
 
-import com.numble.carot.model.entity.User;
-import com.numble.carot.model.enums.Role;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.numble.carot.model.user.entity.User;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;

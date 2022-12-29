@@ -1,4 +1,4 @@
-package com.numble.carot.model.entity;
+package com.numble.carot.model;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;

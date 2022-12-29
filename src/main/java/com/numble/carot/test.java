@@ -1,4 +1,4 @@
-package com.numble.carot.controller;
+package com.numble.carot;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

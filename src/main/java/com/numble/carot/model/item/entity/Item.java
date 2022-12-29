@@ -1,7 +1,10 @@
-package com.numble.carot.model.entity;
+package com.numble.carot.model.item.entity;
 
-import com.numble.carot.model.enums.Category;
-import com.numble.carot.model.enums.Status;
+import com.numble.carot.enums.Category;
+import com.numble.carot.enums.Status;
+import com.numble.carot.model.BaseEntity;
+import com.numble.carot.model.like.Likes;
+import com.numble.carot.model.user.entity.User;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;

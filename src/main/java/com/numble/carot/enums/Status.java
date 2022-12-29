@@ -1,4 +1,4 @@
-package com.numble.carot.model.enums;
+package com.numble.carot.enums;
 
 public enum Status {
     ING("판매중"), DONE("거래완료"), RESERVED("예약중");

@@ -1,6 +1,9 @@
-package com.numble.carot.model.entity;
+package com.numble.carot.model.user.entity;
 
-import com.numble.carot.model.enums.Role;
+import com.numble.carot.enums.Role;
+import com.numble.carot.model.BaseEntity;
+import com.numble.carot.model.item.entity.Item;
+import com.numble.carot.model.like.Likes;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
@@ -13,7 +16,7 @@ import java.util.List;
 @Table(name = "CRUSER")
 @NoArgsConstructor(access = AccessLevel.PROTECTED) //기본 생성자 생성
 @DynamicUpdate //column 많으므로..
-public class User extends BaseEntity{
+public class User extends BaseEntity {
     @Id @GeneratedValue
     @Column(name = "user_id")
     private Long id;

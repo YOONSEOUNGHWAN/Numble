@@ -1,7 +1,7 @@
 package com.numble.carot.common.jwt;
 
-import com.numble.carot.model.entity.User;
-import com.numble.carot.repository.user.UserRepository;
+import com.numble.carot.model.user.entity.User;
+import com.numble.carot.model.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,6 +21,5 @@ public class CustomJwtUserDetailsService implements UserDetailsService {
         User user = userRepository.findById(Long.parseLong(userId)).orElseThrow(() -> new UsernameNotFoundException("해다 유저를 찾을 수 없습니다."));
         return new CustomJwtUserDetails(user);
     }
-
 
 }

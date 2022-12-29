@@ -15,7 +15,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity //web 보안 활성화
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/api/**").permitAll()
 //                .antMatchers("/api/**").access("hasRole('ROLE_ADMIN')")
-                .anyRequest().denyAll()
+                .anyRequest().permitAll()
                 .and()
                 .addFilterBefore(new JwtFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
                 .build();

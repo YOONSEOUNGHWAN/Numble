@@ -1,4 +1,4 @@
-package com.numble.carot.model.enums;
+package com.numble.carot.enums;
 
 public enum Role {
     USER("USER"), GUEST("GUEST"), ADMIN("USER,ADMIN");

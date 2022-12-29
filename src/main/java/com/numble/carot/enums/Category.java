@@ -1,4 +1,4 @@
-package com.numble.carot.model.enums;
+package com.numble.carot.enums;
 
 public enum Category {
     DIGITAL("디지털기기"), LIFE_APPLIANCE("생활가전"), FURNITURE_INTERIOR("가구/인테리어"),
