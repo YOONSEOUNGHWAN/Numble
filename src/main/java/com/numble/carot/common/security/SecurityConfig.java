@@ -10,8 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
@@ -19,7 +17,6 @@ import org.springframework.web.filter.CorsFilter;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final CorsFilter corsFilter;
     private final JwtProvider jwtProvider;
 
     @Bean
@@ -28,12 +25,11 @@ public class SecurityConfig {
                 .httpBasic().disable()
                 .formLogin().disable()
                 .csrf().disable()
-                .addFilter(corsFilter)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/**").permitAll()
-//                .antMatchers("/api/**").access("hasRole('ROLE_ADMIN')")
+//                .antMatchers("/api/user").access("hasRole('ROLE_USER')")
                 .anyRequest().permitAll()
                 .and()
                 .addFilterBefore(new JwtFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)

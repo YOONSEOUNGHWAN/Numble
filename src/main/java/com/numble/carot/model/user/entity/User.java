@@ -32,7 +32,7 @@ public class User extends BaseEntity {
     private String phoneNumber;
 
     private String thumbnail;
-    private Role userRole;
+    private Role userRole; // AOP... -> Token(User_id 정보) 식별...
 
     //영속성 전이를 사용(Persist & Delete) //자식을 지우는 경우 -> persist concept 고아객체 삭제요망.
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
