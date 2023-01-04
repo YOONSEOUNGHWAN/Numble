@@ -1,7 +1,7 @@
 package com.numble.carot.common.util;
 
-import com.numble.carot.exception.IllegalArgumentKeyException;
-import com.numble.carot.exception.InvalidResourceException;
+import com.numble.carot.exception.CustomException;
+import com.numble.carot.exception.ErrorCode;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.BufferedReader;
@@ -38,7 +38,7 @@ public class TextTemplateEngine {
                 lines.add(buffer);
             }
         } catch (IOException e) {
-            throw new InvalidResourceException("리소스 파일을 읽을 수 없습니다 :" + htmlResourcePath +e.getMessage());
+            throw new CustomException(ErrorCode.NOT_FOUND_RESOURCE);
         }
 
         StringBuilder sb = new StringBuilder();
@@ -56,7 +56,7 @@ public class TextTemplateEngine {
 
         public Builder argument(String key, String value){
             if(NOT_ALLOWED_KEY_CHARACTER.matcher(key).matches()){
-                throw new IllegalArgumentKeyException("Key 에 사용할 수 없는 문자가 있습니다.");
+                throw new CustomException(ErrorCode.ILLEGAL_ARGUMENT_KEY);
             }
             arguments.put(key, value);
             return this;

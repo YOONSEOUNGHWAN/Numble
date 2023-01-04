@@ -3,11 +3,10 @@ package com.numble.carot.common.auth.email.service;
 import com.numble.carot.common.auth.email.message.EmailMessage;
 import com.numble.carot.common.jwt.JwtProvider;
 import com.numble.carot.common.util.TextTemplateEngine;
-import com.numble.carot.exception.InvalidResourceException;
-import com.numble.carot.model.user.dto.SignUpDTO;
+import com.numble.carot.exception.CustomException;
+import com.numble.carot.exception.ErrorCode;
+import com.numble.carot.model.user.dto.SignUpDto;
 import com.numble.carot.model.user.repository.UserRepository;
-import lombok.Builder;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -30,11 +29,11 @@ public class EmailService {
 
     private void checkDuplicateSignUp(String email){
         if(!ALLOWED_EMAIL_PATTER.matcher(email).matches()){
-            throw new InvalidResourceException("유효하지 않은 메일 형식입니다.");
+            throw new CustomException(ErrorCode.INVALID_EMAIL);
         }
     }
 
-    private String makeEmailTemplate(SignUpDTO userData){
+    private String makeEmailTemplate(SignUpDto userData){
         String signUpToken = jwtProvider.createEmailSignUpToken(userData);
         String url = String.format("http://www.numble.site?token=%s", signUpToken);
         String text = new TextTemplateEngine.Builder()

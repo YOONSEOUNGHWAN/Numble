@@ -1,7 +1,8 @@
 package com.numble.carot.common.jwt;
 
-import com.numble.carot.exception.InvalidTokenException;
-import com.numble.carot.model.user.dto.SignUpDTO;
+import com.numble.carot.exception.CustomException;
+import com.numble.carot.exception.ErrorCode;
+import com.numble.carot.model.user.dto.SignUpDto;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,7 +62,7 @@ public class JwtProvider {
         }catch (ExpiredJwtException e){
             return e.getClaims().getSubject(); //만료된 경우 별도의 에러처리를 하지 않는다.
         }catch (JwtException e){
-            throw new InvalidTokenException("유효하지 않은 토큰입니다.");
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
         }
     }
 
@@ -89,7 +90,7 @@ public class JwtProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "",userDetails.getAuthorities());
     }
 
-    public String createEmailSignUpToken(SignUpDTO userData){
+    public String createEmailSignUpToken(SignUpDto userData){
         Claims claims = Jwts.claims();
         claims.put("userData", userData);
 

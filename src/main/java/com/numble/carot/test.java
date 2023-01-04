@@ -1,5 +1,7 @@
 package com.numble.carot;
 
+import com.numble.carot.exception.CustomException;
+import com.numble.carot.exception.ErrorCode;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +19,17 @@ import javax.servlet.http.HttpServletResponse;
 public class test {
 
     @GetMapping("/test")
-    public DTO hello(){
-        return new DTO("hello");
+    public String hello(){
+        throw new IllegalArgumentException();
+    }
+    @GetMapping("/test1")
+    public String hello1(){
+        throw new CustomException(ErrorCode.INVALID_TOKEN);
+    }
+
+    @GetMapping("/test3")
+    public DTO hello4(){
+        return new DTO("hi");
     }
 
     @Data
