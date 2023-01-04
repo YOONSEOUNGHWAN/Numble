@@ -1,6 +1,7 @@
 package com.numble.carot.common.jwt;
 
 import com.numble.carot.exception.InvalidTokenException;
+import com.numble.carot.model.user.dto.SignUpDTO;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -87,5 +88,21 @@ public class JwtProvider {
         UserDetails userDetails = customJwtUserDetailsService.loadUserByUsername(getPayload(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "",userDetails.getAuthorities());
     }
+
+    public String createEmailSignUpToken(SignUpDTO userData){
+        Claims claims = Jwts.claims();
+        claims.put("userData", userData);
+
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + 3600);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+    }
+
 
 }
