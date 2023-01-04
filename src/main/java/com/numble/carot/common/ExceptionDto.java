@@ -7,7 +7,6 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @AllArgsConstructor
-@Builder
 @Getter
 public class ExceptionDto {
     private final Boolean success;

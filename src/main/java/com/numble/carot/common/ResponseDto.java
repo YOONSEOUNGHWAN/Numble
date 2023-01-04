@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 
 @AllArgsConstructor
-@Builder
 @Getter
 public class ResponseDto<T> {
     private final Boolean success;

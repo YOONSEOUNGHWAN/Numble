@@ -5,7 +5,7 @@ import com.numble.carot.common.jwt.JwtProvider;
 import com.numble.carot.common.util.TextTemplateEngine;
 import com.numble.carot.exception.CustomException;
 import com.numble.carot.exception.ErrorCode;
-import com.numble.carot.model.user.dto.SignUpDto;
+import com.numble.carot.model.user.dto.request.SignUpReq;
 import com.numble.carot.model.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ public class EmailService {
         }
     }
 
-    private String makeEmailTemplate(SignUpDto userData){
+    private String makeEmailTemplate(SignUpReq userData){
         String signUpToken = jwtProvider.createEmailSignUpToken(userData);
         String url = String.format("http://www.numble.site?token=%s", signUpToken);
         String text = new TextTemplateEngine.Builder()

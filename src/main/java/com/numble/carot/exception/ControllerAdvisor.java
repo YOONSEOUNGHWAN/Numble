@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ControllerAdvisor {
-
     @ExceptionHandler(value = {CustomException.class})
     protected ResponseEntity exceptionHandler(CustomException e){
         return ResponseEntity.status(e.errorCode.getStatus()).body(new ExceptionDto(e));

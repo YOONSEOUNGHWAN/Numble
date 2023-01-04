@@ -4,8 +4,7 @@ import com.numble.carot.enums.Role;
 import com.numble.carot.model.BaseEntity;
 import com.numble.carot.model.item.entity.Item;
 import com.numble.carot.model.like.Likes;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
@@ -15,7 +14,10 @@ import java.util.List;
 @Entity
 @Table(name = "CRUSER")
 @NoArgsConstructor(access = AccessLevel.PROTECTED) //기본 생성자 생성
+@AllArgsConstructor
 @DynamicUpdate //column 많으므로..
+@Getter
+@Builder
 public class User extends BaseEntity {
     @Id @GeneratedValue
     @Column(name = "user_id")
@@ -40,12 +42,4 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Likes> likeList = new ArrayList<>();
-
-    public String getName() {
-        return name;
-    }
-
-    public Role getUserRole() {
-        return userRole;
-    }
 }

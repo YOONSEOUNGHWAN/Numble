@@ -2,7 +2,7 @@ package com.numble.carot.common.jwt;
 
 import com.numble.carot.exception.CustomException;
 import com.numble.carot.exception.ErrorCode;
-import com.numble.carot.model.user.dto.SignUpDto;
+import com.numble.carot.model.user.dto.request.SignUpReq;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -90,7 +90,7 @@ public class JwtProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "",userDetails.getAuthorities());
     }
 
-    public String createEmailSignUpToken(SignUpDto userData){
+    public String createEmailSignUpToken(SignUpReq userData){
         Claims claims = Jwts.claims();
         claims.put("userData", userData);
 
