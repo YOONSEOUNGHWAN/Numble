@@ -1,15 +1,11 @@
 package com.numble.carot.model;
 
 import lombok.Getter;
-import org.hibernate.annotations.DynamicUpdate;
-import org.joda.time.DateTime;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
@@ -21,9 +17,9 @@ import java.time.LocalDateTime;
 public abstract class BaseEntity {
     @CreatedDate
     @Column(updatable = false, name = "create_at")
-    private DateTime createDate;
+    private LocalDateTime createDate;
 
     @LastModifiedDate
     @Column(name = "update_at")
-    private DateTime updateDate;
+    private LocalDateTime updateDate;
 }

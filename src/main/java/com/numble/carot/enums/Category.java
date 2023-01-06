@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 @Getter
 @AllArgsConstructor
 public enum Category {
@@ -13,5 +17,11 @@ public enum Category {
     BOOK_TICKET_MUSIC("도서/티켓/음반"), ETC("기타중고물품"), CAR("중고차");
 
     private final String name;
+    private static final Map<String, Category> BY_LABEL =
+            Stream.of(values()).collect(Collectors.toMap(Category::getName, e -> e));
+
+    public static Category valueOfName(String name) {
+        return BY_LABEL.get(name);
+    }
 
 }

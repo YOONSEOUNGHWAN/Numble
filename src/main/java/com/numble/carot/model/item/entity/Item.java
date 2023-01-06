@@ -52,7 +52,7 @@ public class Item extends BaseEntity {
         this.user = user;
         this.title = data.getTitle();
         this.price = data.getPrice();
-        this.category = data.getCategory();
+        this.category = Category.valueOfName(data.getCategory());
         this.text = data.getText();
         this.status = Status.ING;
     }

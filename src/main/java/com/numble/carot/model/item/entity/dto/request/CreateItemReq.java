@@ -11,7 +11,7 @@ import java.util.List;
 public class CreateItemReq {
     private List<MultipartFile> files = new ArrayList<>();
     private String title;
-    private Category category;
+    private String category;
     private Integer price;
     private String text;
 }

@@ -20,6 +20,7 @@ public class S3Object {
     @JoinColumn(name = "item_id")
     private Item item;
 
+    @Lob
     private String url;
 
     private String fileName;

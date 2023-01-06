@@ -4,12 +4,14 @@ import com.numble.carot.model.BaseEntity;
 import com.numble.carot.model.item.entity.Item;
 import com.numble.carot.model.user.entity.User;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Likes extends BaseEntity {
     @Id @GeneratedValue
     @Column(name = "like_id")

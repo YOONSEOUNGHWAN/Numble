@@ -33,12 +33,14 @@ public class S3Service {
     public void uploadItemFiles(List<MultipartFile> files, Item item){
         log.info("S3 upload 시작");
         List<S3Object> photoUrls = item.getPhotoUrls();
-        String prefix = DateTime.now() + "-" + item.getUser().getId() + "-" + item.getId() + "-";
+        String prefix = DateTime.now() + "-" + item.getUser().getId() + "-";
         files.stream()
                 .forEach(file ->{
                     String fileName = uploadFile(file, prefix, "item");
+                    System.out.println(getUrl(fileName));
                     S3Object s3Object = S3Object.builder()
-                            .url(amazonS3.getUrl(bucket, fileName).toString())
+                            .item(item)
+                            .url(getUrl(fileName))
                             .fileName(fileName)
                             .build();
                     photoUrls.add(s3Object);

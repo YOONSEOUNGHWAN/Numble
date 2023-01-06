@@ -31,8 +31,6 @@ public class MyInterceptor implements HandlerInterceptor {
         if(!String.valueOf(response.getStatus()).startsWith("2")){
             return;
         }
-        int i = response.hashCode();
-        System.out.println("i = " + i);
         if (cachingResponse.getContentType() != null && cachingResponse.getContentType().contains("application/json")) {
             if (cachingResponse.getContentAsByteArray().length != 0) {
                 String body = new String(cachingResponse.getContentAsByteArray());
