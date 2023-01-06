@@ -1,6 +1,7 @@
 package com.numble.carot.model.item.controller;
 
 import com.numble.carot.enums.Category;
+import com.numble.carot.enums.Status;
 import com.numble.carot.model.item.entity.dto.request.CreateItemReq;
 import com.numble.carot.model.item.entity.dto.response.ItemInfo;
 import com.numble.carot.model.item.service.ItemService;
@@ -39,10 +40,30 @@ public class ItemController {
         return data;
     }
 
-//    @PatchMapping("/{id}")
-//    public ItemInfo
+    @PatchMapping("/{id}")
+    public ResponseEntity<Long> updateOne(HttpServletRequest request, @PathVariable("id")Long id, @Valid @ModelAttribute CreateItemReq data){
+        Long itemId = itemService.updateOne(request, id, data);
+        return ResponseEntity.ok().body(itemId);
+    }
 
+    /**
+     * todo : 한글 입력시 에러가........
+     * @param request
+     * @param id
+     * @param status
+     * @return
+     */
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<Long> updateOneStatus(HttpServletRequest request, @PathVariable("id")Long id, @Valid Status status){
+        Long itemId = itemService.updateOneStatus(request, id, status);
+        return ResponseEntity.ok().body(itemId);
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteOne(HttpServletRequest request, @PathVariable("id")Long id){
+        itemService.delete(request, id);
+        return ResponseEntity.ok().body("삭제완료");
+    }
 
 
 }

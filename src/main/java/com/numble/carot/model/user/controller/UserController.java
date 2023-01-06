@@ -36,5 +36,10 @@ public class UserController {
         return result;
     }
 
+    @DeleteMapping("/profile")
+    public UserInfo deleteProfile(HttpServletRequest request){
+        UserInfo result = userService.deleteProfile(request);
+        return result;
+    }
 
 }

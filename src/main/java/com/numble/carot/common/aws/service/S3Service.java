@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -33,24 +34,36 @@ public class S3Service {
     public void uploadItemFiles(List<MultipartFile> files, Item item){
         log.info("S3 upload 시작");
         List<S3Object> photoUrls = item.getPhotoUrls();
-        String prefix = DateTime.now() + "-" + item.getUser().getId() + "-";
-        files.stream()
-                .forEach(file ->{
-                    String fileName = uploadFile(file, prefix, "item");
-                    System.out.println(getUrl(fileName));
-                    S3Object s3Object = S3Object.builder()
-                            .item(item)
-                            .url(getUrl(fileName))
-                            .fileName(fileName)
-                            .build();
-                    photoUrls.add(s3Object);
-                });
+//        List<S3Object> cache = List.copyOf(photoUrls);
+        //비우기..
+//        photoUrls.clear();
+        String prefix = DateTime.now() + "$" + item.getUser().getId() + "$";
+        //중복체크
+        files.stream().filter(file -> !checkDuplicateFileName(photoUrls, file.getOriginalFilename()))
+                .map(file -> uploadFile(file, prefix, "item"))
+                .forEach(fileName -> {
+            S3Object s3Object = S3Object.builder()
+                    .item(item)
+                    .url(getUrl(fileName))
+                    .fileName(fileName)
+                    .build();
+            photoUrls.add(s3Object);
+        });
         log.info("upload 끝");
+    }
+
+    private boolean checkDuplicateFileName(List<S3Object> photoUrls, String originalFilename) {
+        List<String> collect = photoUrls.stream().map(S3Object::getFileName)
+                .map(url -> url.split("\\$")[2])
+                .collect(Collectors.toList());
+        System.out.println("collect = " + collect);
+        System.out.println(originalFilename);
+        return collect.contains(originalFilename);
     }
 
     public void uploadUserProfile(MultipartFile file, User user){
         log.info("S3 upload 시작");
-        String prefix = DateTime.now() + "-" + user.getId() + "-";
+        String prefix = DateTime.now() + "$" + user.getId() + "$";
         String fileName = uploadFile(file, prefix, "profile");
         user.updateThumbnail(getUrl(fileName));
         log.info("upload 끝");
@@ -58,7 +71,7 @@ public class S3Service {
 
 
     private String uploadFile(MultipartFile file, String prefix, String dirName) {
-        String fileName = dirName + "/" + prefix + file.getOriginalFilename() + "-" + UUID.randomUUID();
+        String fileName = dirName + "/" + prefix + file.getOriginalFilename() + "$" + UUID.randomUUID();
         try{
             InputStream is = file.getInputStream();
             ObjectMetadata objectMetadata = new ObjectMetadata();

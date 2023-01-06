@@ -20,6 +20,7 @@ public class S3Object {
     @JoinColumn(name = "item_id")
     private Item item;
 
+    //URL 길이가 256byte 넘어감..
     @Lob
     private String url;
 

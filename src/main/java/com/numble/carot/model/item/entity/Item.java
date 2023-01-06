@@ -56,4 +56,15 @@ public class Item extends BaseEntity {
         this.text = data.getText();
         this.status = Status.ING;
     }
+
+    public void update(CreateItemReq data) {
+        this.title = data.getTitle();
+        this.price = data.getPrice();
+        this.category = Category.valueOfName(data.getCategory());
+        this.text = data.getText();
+    }
+
+    public void updateStatus(Status status){
+        this.status = status;
+    }
 }
