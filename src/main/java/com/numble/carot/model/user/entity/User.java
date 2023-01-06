@@ -34,6 +34,8 @@ public class User extends BaseEntity {
     private String phoneNumber;
 
     private String thumbnail;
+
+    @Enumerated(EnumType.STRING)
     private Role userRole; // AOP... -> Token(User_id 정보) 식별...
     private String location;
 
@@ -50,5 +52,9 @@ public class User extends BaseEntity {
 
     public void updateThumbnail(String url){
         this.thumbnail = url;
+    }
+
+    public void deleteThumbnail(){
+        this.thumbnail = null;
     }
 }

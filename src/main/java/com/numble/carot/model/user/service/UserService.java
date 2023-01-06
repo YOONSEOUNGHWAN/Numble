@@ -1,5 +1,6 @@
 package com.numble.carot.model.user.service;
 
+import com.numble.carot.common.aws.service.S3Service;
 import com.numble.carot.common.jwt.JwtProvider;
 import com.numble.carot.enums.Role;
 import com.numble.carot.exception.CustomException;
@@ -25,6 +26,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncrypt;
     private final JwtProvider jwtProvider;
+    private final S3Service s3Service;
     @Transactional
     public LogInInfo signUp(SignUpReq request) {
         //email 검증 -> phone 은 변동성
@@ -71,11 +73,14 @@ public class UserService {
         User user = jwtProvider.getUser(request);
         user.updateNickName(req.getNickName());
         if(!req.getThumbnail().isEmpty()){
-            /**
-             * todo : fileUploader생성
-             */
-            user.updateThumbnail("url");
+            s3Service.uploadUserProfile(req.getThumbnail(), user);
         }
+        return new UserInfo(user.getNickName(), user.getThumbnail());
+    }
+
+    public UserInfo deleteProfile(HttpServletRequest request) {
+        User user = jwtProvider.getUser(request);
+        user.deleteThumbnail();
         return new UserInfo(user.getNickName(), user.getThumbnail());
     }
 }
