@@ -2,7 +2,9 @@ package com.numble.carot.common.jwt;
 
 import com.numble.carot.exception.CustomException;
 import com.numble.carot.exception.ErrorCode;
-import com.numble.carot.model.user.dto.request.SignUpReq;
+import com.numble.carot.model.user.entity.User;
+import com.numble.carot.model.user.entity.dto.request.SignUpReq;
+import com.numble.carot.model.user.repository.UserRepository;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,7 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.Optional;
 
 @Component // component scan 대상 bean등록
 @Slf4j
@@ -28,6 +31,8 @@ public class JwtProvider {
     private long refreshTokenValidityInMilliseconds;
     @Value("${jwt.token.secret-key}")
     private String secretKey;
+
+    private final UserRepository userRepository;
 
 
     public String createAccessToken(String payload){
@@ -74,6 +79,12 @@ public class JwtProvider {
         return null;
     }
 
+    public User getUser(HttpServletRequest request){
+        String token = resolveToken(request);
+        long id = Long.parseLong(getPayload(token));
+        return userRepository.findById(id).get();
+    }
+
     public boolean validateToken(String token){
         try{
             Jws<Claims> claimsJws = Jwts.parser()
@@ -89,6 +100,8 @@ public class JwtProvider {
         UserDetails userDetails = customJwtUserDetailsService.loadUserByUsername(getPayload(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "",userDetails.getAuthorities());
     }
+
+
 
     public String createEmailSignUpToken(SignUpReq userData){
         Claims claims = Jwts.claims();

@@ -1,4 +1,4 @@
-package com.numble.carot.model.user.dto.response;
+package com.numble.carot.model.user.entity.dto.response;
 
 import com.numble.carot.model.user.entity.User;
 import lombok.AllArgsConstructor;
@@ -11,5 +11,6 @@ public class LogInInfo {
     private String accessToken;
     private String refreshToken;
     private String tokenType;
+    private String nickName;
 
 }

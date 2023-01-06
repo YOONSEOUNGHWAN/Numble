@@ -1,6 +1,6 @@
 package com.numble.carot.common.jwt;
 
-import com.numble.carot.model.user.dto.request.SignUpReq;
+import com.numble.carot.model.user.entity.dto.request.SignUpReq;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

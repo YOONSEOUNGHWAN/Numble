@@ -1,12 +1,13 @@
 package com.numble.carot.model.item.entity;
 
+import com.numble.carot.common.aws.entity.S3Object;
 import com.numble.carot.enums.Category;
 import com.numble.carot.enums.Status;
 import com.numble.carot.model.BaseEntity;
+import com.numble.carot.model.item.entity.dto.request.CreateItemReq;
 import com.numble.carot.model.like.Likes;
 import com.numble.carot.model.user.entity.User;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
@@ -16,6 +17,9 @@ import java.util.List;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
+@Getter
+@AllArgsConstructor
+@Builder
 public class Item extends BaseEntity {
     @Id
     @GeneratedValue
@@ -36,13 +40,20 @@ public class Item extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    private String photoUrl;
-
-    private String location;
-
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<S3Object> photoUrls = new ArrayList<>();
     private String text;
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
+
+    public Item(User user, CreateItemReq data) {
+        this.user = user;
+        this.title = data.getTitle();
+        this.price = data.getPrice();
+        this.category = data.getCategory();
+        this.text = data.getText();
+        this.status = Status.ING;
+    }
 }

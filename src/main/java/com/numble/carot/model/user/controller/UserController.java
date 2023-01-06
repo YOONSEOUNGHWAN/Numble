@@ -1,15 +1,15 @@
 package com.numble.carot.model.user.controller;
 
-import com.numble.carot.model.user.dto.request.LogInReq;
-import com.numble.carot.model.user.dto.request.SignUpReq;
-import com.numble.carot.model.user.dto.response.LogInInfo;
+import com.numble.carot.model.user.entity.dto.request.LogInReq;
+import com.numble.carot.model.user.entity.dto.request.ProfileUpdateReq;
+import com.numble.carot.model.user.entity.dto.request.SignUpReq;
+import com.numble.carot.model.user.entity.dto.response.LogInInfo;
+import com.numble.carot.model.user.entity.dto.response.UserInfo;
 import com.numble.carot.model.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -25,9 +25,16 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public LogInInfo login(@RequestBody LogInReq loginReq){
+    public LogInInfo login(@Valid @RequestBody LogInReq loginReq){
         LogInInfo result = userService.logIn(loginReq);
         return result;
     }
+
+    @PostMapping("/profile")
+    public UserInfo updateProfile(HttpServletRequest request, @Valid @RequestBody ProfileUpdateReq req){
+        UserInfo result = userService.updateProfile(request, req);
+        return result;
+    }
+
 
 }

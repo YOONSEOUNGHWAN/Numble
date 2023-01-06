@@ -1,4 +1,4 @@
-package com.numble.carot.model.user.dto.request;
+package com.numble.carot.model.user.entity.dto.request;
 
 import lombok.Data;
 import lombok.NonNull;

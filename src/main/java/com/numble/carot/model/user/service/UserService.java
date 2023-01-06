@@ -3,24 +3,24 @@ package com.numble.carot.model.user.service;
 import com.numble.carot.common.jwt.JwtProvider;
 import com.numble.carot.enums.Role;
 import com.numble.carot.exception.CustomException;
-import com.numble.carot.exception.ErrorCode;
-import com.numble.carot.model.user.dto.request.LogInReq;
-import com.numble.carot.model.user.dto.request.SignUpReq;
-import com.numble.carot.model.user.dto.response.LogInInfo;
+import com.numble.carot.model.user.entity.dto.request.LogInReq;
+import com.numble.carot.model.user.entity.dto.request.ProfileUpdateReq;
+import com.numble.carot.model.user.entity.dto.request.SignUpReq;
+import com.numble.carot.model.user.entity.dto.response.LogInInfo;
+import com.numble.carot.model.user.entity.dto.response.UserInfo;
 import com.numble.carot.model.user.entity.User;
 import com.numble.carot.model.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.HttpServletRequest;
 
 import static com.numble.carot.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncrypt;
@@ -45,7 +45,7 @@ public class UserService {
         String accessToken = jwtProvider.createAccessToken(user.getId().toString());
         String refreshToken = jwtProvider.createRefreshToken();
 
-        return new LogInInfo(user.getId(), accessToken, refreshToken, "Bearer");
+        return new LogInInfo(user.getId(), accessToken, refreshToken, "Bearer", user.getNickName());
     }
 
     private void checkDuplicateUser(String email) {
@@ -62,6 +62,20 @@ public class UserService {
         String accessToken = jwtProvider.createAccessToken(user.getId().toString());
         String refreshToken = jwtProvider.createRefreshToken();
 
-        return new LogInInfo(user.getId(), accessToken, refreshToken, "Bearer");
+        return new LogInInfo(user.getId(), accessToken, refreshToken, "Bearer", user.getNickName());
+    }
+
+    @Transactional
+    public UserInfo updateProfile(HttpServletRequest request, ProfileUpdateReq req) {
+        //여기 까지 들어왔다면 User 가 존재하는 것임. -> Spring Security
+        User user = jwtProvider.getUser(request);
+        user.updateNickName(req.getNickName());
+        if(!req.getThumbnail().isEmpty()){
+            /**
+             * todo : fileUploader생성
+             */
+            user.updateThumbnail("url");
+        }
+        return new UserInfo(user.getNickName(), user.getThumbnail());
     }
 }

@@ -1,6 +1,8 @@
 package com.numble.carot.model;
 
+import lombok.Getter;
 import org.hibernate.annotations.DynamicUpdate;
+import org.joda.time.DateTime;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -14,13 +16,14 @@ import java.time.LocalDateTime;
 
 @MappedSuperclass //Entity로 사용 X -> 추상화
 @EntityListeners(AuditingEntityListener.class)
+@Getter
 //@DynamicUpdate -> 데이터가 적음
 public abstract class BaseEntity {
     @CreatedDate
     @Column(updatable = false, name = "create_at")
-    private LocalDateTime createDate;
+    private DateTime createDate;
 
     @LastModifiedDate
     @Column(name = "update_at")
-    private LocalDateTime updateDate;
+    private DateTime updateDate;
 }
