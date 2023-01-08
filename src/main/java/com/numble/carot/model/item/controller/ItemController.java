@@ -1,19 +1,17 @@
 package com.numble.carot.model.item.controller;
 
-import com.numble.carot.common.jwt.CustomJwtUserDetails;
 import com.numble.carot.enums.Category;
 import com.numble.carot.enums.Status;
-import com.numble.carot.model.item.entity.dto.request.CreateItemReq;
+import com.numble.carot.model.item.entity.dto.request.CreateItemRequestDTO;
 import com.numble.carot.model.item.entity.dto.response.ItemInfo;
 import com.numble.carot.model.item.entity.dto.response.ItemListInfo;
-import com.numble.carot.model.item.entity.dto.response.SliceRes;
+import com.numble.carot.model.item.entity.dto.response.SliceResponseDTO;
 import com.numble.carot.model.item.service.ItemService;
 import com.numble.carot.model.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,14 +27,14 @@ public class ItemController {
     private final ItemService itemService;
 
     @PostMapping
-    public ResponseEntity<Long> create(Authentication authentication, @Valid @ModelAttribute CreateItemReq data) {
+    public ResponseEntity<Long> create(Authentication authentication, @Valid @ModelAttribute CreateItemRequestDTO data) {
         Object principal = authentication.getPrincipal();
         Long itemId = itemService.create((User) principal, data);
         return ResponseEntity.ok().body(itemId);
     }
 
     @GetMapping
-    public SliceRes<ItemListInfo> list(HttpServletRequest request, Pageable pageable){
+    public SliceResponseDTO<ItemListInfo> list(HttpServletRequest request, Pageable pageable){
         /**
          * 유저의 위치정보에 따라 보여줘야하는 Item 상이
          * todo: 위치 정보
@@ -53,7 +51,7 @@ public class ItemController {
     }
 
     @GetMapping("/{id}/list")
-    public SliceRes<ItemListInfo> userLIst(HttpServletRequest request, @PathVariable("id")Long userId,  Pageable pageable){
+    public SliceResponseDTO<ItemListInfo> userLIst(HttpServletRequest request, @PathVariable("id")Long userId, Pageable pageable){
         return itemService.findAllByUserId(userId, pageable);
     }
 
@@ -65,7 +63,7 @@ public class ItemController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Long> updateOne(Authentication authentication, @PathVariable("id")Long id, @Valid @ModelAttribute CreateItemReq data){
+    public ResponseEntity<Long> updateOne(Authentication authentication, @PathVariable("id")Long id, @Valid @ModelAttribute CreateItemRequestDTO data){
         Object principal = authentication.getPrincipal();
         Long itemId = itemService.updateOne((User) principal, id, data);
         return ResponseEntity.ok().body(itemId);

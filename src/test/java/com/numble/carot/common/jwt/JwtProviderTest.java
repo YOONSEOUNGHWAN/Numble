@@ -1,6 +1,6 @@
 package com.numble.carot.common.jwt;
 
-import com.numble.carot.model.user.entity.dto.request.SignUpReq;
+import com.numble.carot.model.user.entity.dto.request.SignUpRequestDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,10 +16,10 @@ class JwtProviderTest {
 
     @Test
     void emailToken(){
-        SignUpReq signUpReq = new SignUpReq();
-        signUpReq.setEmail("seoung59");
+        SignUpRequestDTO signUpRequestDTO = new SignUpRequestDTO();
+        signUpRequestDTO.setEmail("seoung59");
 
-        String emailSignInToken = jwtProvider.createEmailSignUpToken(signUpReq);
+        String emailSignInToken = jwtProvider.createEmailSignUpToken(signUpRequestDTO);
         System.out.println("emailSignInToken = " + emailSignInToken);
     }
 

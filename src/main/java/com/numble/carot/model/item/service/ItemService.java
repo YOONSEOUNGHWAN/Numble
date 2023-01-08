@@ -7,10 +7,10 @@ import com.numble.carot.enums.Status;
 import com.numble.carot.exception.CustomException;
 import com.numble.carot.exception.ErrorCode;
 import com.numble.carot.model.item.entity.Item;
-import com.numble.carot.model.item.entity.dto.request.CreateItemReq;
+import com.numble.carot.model.item.entity.dto.request.CreateItemRequestDTO;
 import com.numble.carot.model.item.entity.dto.response.ItemInfo;
 import com.numble.carot.model.item.entity.dto.response.ItemListInfo;
-import com.numble.carot.model.item.entity.dto.response.SliceRes;
+import com.numble.carot.model.item.entity.dto.response.SliceResponseDTO;
 import com.numble.carot.model.item.repository.ItemRepository;
 import com.numble.carot.model.like.Likes;
 import com.numble.carot.model.user.entity.User;
@@ -20,7 +20,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +31,7 @@ public class ItemService {
     private final JwtProvider jwtProvider;
     private final S3Service s3Service;
 
-    public Long create(User user, CreateItemReq data){
+    public Long create(User user, CreateItemRequestDTO data){
         Item item = new Item(user, data);
         /**
          * Item 의 Id를 얻어오고 싶은데, 아직 DB에 적용 전이라 Id 값이 주어지지 않음.
@@ -50,7 +49,7 @@ public class ItemService {
 
     }
 
-    public Long updateOne(User user, Long id, CreateItemReq data) {
+    public Long updateOne(User user, Long id, CreateItemRequestDTO data) {
         Item item = itemRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ITEM));
         isCreate(user, item);
         /**
@@ -111,15 +110,15 @@ public class ItemService {
         }
     }
 
-    public SliceRes<ItemListInfo> findAllByPageable(Pageable pageable) {
+    public SliceResponseDTO<ItemListInfo> findAllByPageable(Pageable pageable) {
         Slice<Item> all = itemRepository.findAll(pageable);
         Slice<ItemListInfo> map = all.map(ItemListInfo::new);
-        return new SliceRes<>(map.getContent(), map.getPageable(), map.hasNext());
+        return new SliceResponseDTO<>(map.getContent(), map.getPageable(), map.hasNext());
     }
 
-    public SliceRes<ItemListInfo> findAllByUserId(Long userId, Pageable pageable) {
+    public SliceResponseDTO<ItemListInfo> findAllByUserId(Long userId, Pageable pageable) {
         Slice<Item> all = itemRepository.findAllByUserId(userId, pageable);
         Slice<ItemListInfo> map = all.map(ItemListInfo::new);
-        return new SliceRes<>(map.getContent(), map.getPageable(), map.hasNext());
+        return new SliceResponseDTO<>(map.getContent(), map.getPageable(), map.hasNext());
     }
 }

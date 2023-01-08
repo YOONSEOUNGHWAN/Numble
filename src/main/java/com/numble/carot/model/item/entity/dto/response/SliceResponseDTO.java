@@ -11,13 +11,13 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SliceRes<T> implements Serializable {
+public class SliceResponseDTO<T> implements Serializable {
     private List<T> content;
     private boolean hasNext;
     private boolean isFirst;
     private boolean isLast;
 
-    public SliceRes(List<T> content, Pageable pageable, boolean hasNext){
+    public SliceResponseDTO(List<T> content, Pageable pageable, boolean hasNext){
         SliceImpl<T> slice = new SliceImpl<>(content, pageable, hasNext);
         this.content = slice.getContent();
         this.hasNext = slice.hasNext();

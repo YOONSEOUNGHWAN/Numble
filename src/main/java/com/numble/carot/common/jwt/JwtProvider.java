@@ -3,7 +3,7 @@ package com.numble.carot.common.jwt;
 import com.numble.carot.exception.CustomException;
 import com.numble.carot.exception.ErrorCode;
 import com.numble.carot.model.user.entity.User;
-import com.numble.carot.model.user.entity.dto.request.SignUpReq;
+import com.numble.carot.model.user.entity.dto.request.SignUpRequestDTO;
 import com.numble.carot.model.user.repository.UserRepository;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
@@ -11,13 +11,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.Optional;
 
 @Component // component scan 대상 bean등록
 @Slf4j
@@ -103,7 +101,7 @@ public class JwtProvider {
 
 
 
-    public String createEmailSignUpToken(SignUpReq userData){
+    public String createEmailSignUpToken(SignUpRequestDTO userData){
         Claims claims = Jwts.claims();
         claims.put("userData", userData);
 
