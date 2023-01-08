@@ -97,8 +97,8 @@ public class JwtProvider {
     }
 
     public Authentication getAuthentication(String token){
-        UserDetails userDetails = customJwtUserDetailsService.loadUserByUsername(getPayload(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "",userDetails.getAuthorities());
+        CustomJwtUserDetails userDetails = customJwtUserDetailsService.loadUserByUsername(getPayload(token));
+        return new UsernamePasswordAuthenticationToken(userDetails.getUser(), "",userDetails.getAuthorities());
     }
 
 

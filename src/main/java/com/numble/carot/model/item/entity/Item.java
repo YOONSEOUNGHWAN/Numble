@@ -9,6 +9,7 @@ import com.numble.carot.model.like.Likes;
 import com.numble.carot.model.user.entity.User;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -20,7 +21,10 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @Builder
-public class Item extends BaseEntity {
+/**
+ * UUID 를 따뤄
+ */
+public class Item extends BaseEntity{
     @Id
     @GeneratedValue
     @Column(name = "item_id")
@@ -67,4 +71,5 @@ public class Item extends BaseEntity {
     public void updateStatus(Status status){
         this.status = status;
     }
+
 }

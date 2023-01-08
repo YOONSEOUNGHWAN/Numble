@@ -17,7 +17,7 @@ public class CustomJwtUserDetailsService implements UserDetailsService {
 
     //Error Handling 어쩌지..?
     @Override
-    public UserDetails loadUserByUsername(String userId) {
+    public CustomJwtUserDetails loadUserByUsername(String userId) {
         User user = userRepository.findById(Long.parseLong(userId)).orElseThrow(() -> new UsernameNotFoundException("해당 유저를 찾을 수 없습니다."));
         return new CustomJwtUserDetails(user);
     }

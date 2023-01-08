@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.servlet.http.HttpServletRequest;
 
 import static com.numble.carot.exception.ErrorCode.*;
@@ -57,7 +56,7 @@ public class UserService {
     }
 
     public LogInInfo logIn(LogInReq loginReq) {
-        User user = userRepository.findByEmail(loginReq.getEmail()).orElseThrow(() -> new CustomException(INVALID_EMAIL));
+        User user = userRepository.findByEmail(loginReq.getEmail()).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
         if(!passwordEncrypt.matches(loginReq.getPw(), user.getPassword())){
             throw new CustomException(NO_MATCH_PASSWORD);
         }
@@ -68,9 +67,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserInfo updateProfile(HttpServletRequest request, ProfileUpdateReq req) {
-        //여기 까지 들어왔다면 User 가 존재하는 것임. -> Spring Security
-        User user = jwtProvider.getUser(request);
+    public UserInfo updateProfile(User user, ProfileUpdateReq req) {
         user.updateNickName(req.getNickName());
         if(!req.getThumbnail().isEmpty()){
             s3Service.uploadUserProfile(req.getThumbnail(), user);
@@ -78,8 +75,7 @@ public class UserService {
         return new UserInfo(user.getNickName(), user.getThumbnail());
     }
 
-    public UserInfo deleteProfile(HttpServletRequest request) {
-        User user = jwtProvider.getUser(request);
+    public UserInfo deleteProfile(User user) {
         user.deleteThumbnail();
         return new UserInfo(user.getNickName(), user.getThumbnail());
     }

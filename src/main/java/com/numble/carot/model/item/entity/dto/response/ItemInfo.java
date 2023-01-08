@@ -8,6 +8,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * JPQL -> Entity 만들어서 넣기 : 한방쿼리~~ JOIN
+ */
 @Data
 @Builder
 public class ItemInfo {

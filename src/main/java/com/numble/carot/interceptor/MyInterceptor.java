@@ -31,7 +31,7 @@ public class MyInterceptor implements HandlerInterceptor {
         if(!String.valueOf(response.getStatus()).startsWith("2")){
             return;
         }
-        if (cachingResponse.getContentType() != null && cachingResponse.getContentType().contains("application/json")) {
+        if (cachingResponse.getContentType() != null && (cachingResponse.getContentType().contains("application/json"))) {
             if (cachingResponse.getContentAsByteArray().length != 0) {
                 String body = new String(cachingResponse.getContentAsByteArray());
                 Object data = objectMapper.readValue(body, Object.class);

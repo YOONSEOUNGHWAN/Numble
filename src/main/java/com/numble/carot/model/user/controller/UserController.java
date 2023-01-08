@@ -1,5 +1,6 @@
 package com.numble.carot.model.user.controller;
 
+import com.numble.carot.model.user.entity.User;
 import com.numble.carot.model.user.entity.dto.request.LogInReq;
 import com.numble.carot.model.user.entity.dto.request.ProfileUpdateReq;
 import com.numble.carot.model.user.entity.dto.request.SignUpReq;
@@ -7,9 +8,8 @@ import com.numble.carot.model.user.entity.dto.response.LogInInfo;
 import com.numble.carot.model.user.entity.dto.response.UserInfo;
 import com.numble.carot.model.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -31,15 +31,16 @@ public class UserController {
     }
 
     @PostMapping("/profile")
-    public UserInfo updateProfile(HttpServletRequest request, @Valid @RequestBody ProfileUpdateReq req){
-        UserInfo result = userService.updateProfile(request, req);
+    public UserInfo updateProfile(Authentication authentication, @Valid @RequestBody ProfileUpdateReq req){
+        Object principal = authentication.getPrincipal();
+        UserInfo result = userService.updateProfile((User) principal, req);
         return result;
     }
 
     @DeleteMapping("/profile")
-    public UserInfo deleteProfile(HttpServletRequest request){
-        UserInfo result = userService.deleteProfile(request);
-        return result;
+    public UserInfo deleteProfile(Authentication authentication){
+        Object principal = authentication.getPrincipal();
+        return userService.deleteProfile((User) principal);
     }
 
 }
