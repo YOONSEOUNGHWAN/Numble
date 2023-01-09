@@ -1,7 +1,6 @@
-package com.numble.carot.enums;
+package com.numble.carot.model.enums;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 
 import java.util.Map;

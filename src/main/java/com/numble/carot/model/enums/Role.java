@@ -1,4 +1,4 @@
-package com.numble.carot.enums;
+package com.numble.carot.model.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

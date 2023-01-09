@@ -2,7 +2,7 @@ package com.numble.carot.model.user.service;
 
 import com.numble.carot.common.aws.service.S3Service;
 import com.numble.carot.common.jwt.JwtProvider;
-import com.numble.carot.enums.Role;
+import com.numble.carot.model.enums.Role;
 import com.numble.carot.exception.CustomException;
 import com.numble.carot.model.user.entity.dto.request.LogInRequestDTO;
 import com.numble.carot.model.user.entity.dto.request.ProfileUpdateRequestDTO;
@@ -48,12 +48,6 @@ public class UserService {
         return new LogInResponseDTO(user.getId(), accessToken, refreshToken, "Bearer", user.getNickName());
     }
 
-    private void checkDuplicateUser(String email) {
-        if(userRepository.findByEmail(email).isPresent()){
-            throw new CustomException(ALREADY_EXIST_USER);
-        }
-    }
-
     public LogInResponseDTO logIn(LogInRequestDTO loginReq) {
         User user = userRepository.findByEmail(loginReq.getEmail()).orElseThrow(() -> new CustomException(NOT_FOUND_USER));
         if(!passwordEncrypt.matches(loginReq.getPw(), user.getPassword())){
@@ -71,11 +65,20 @@ public class UserService {
         if(!req.getThumbnail().isEmpty()){
             s3Service.uploadUserProfile(req.getThumbnail(), user);
         }
-        return new UserInfo(user.getNickName(), user.getThumbnail());
+        User save = userRepository.save(user);
+        return new UserInfo(save);
     }
 
+    @Transactional
     public UserInfo deleteProfile(User user) {
         user.deleteThumbnail();
-        return new UserInfo(user.getNickName(), user.getThumbnail());
+        User save = userRepository.save(user);
+        return new UserInfo(save);
+    }
+
+    private void checkDuplicateUser(String email) {
+        if(userRepository.findByEmail(email).isPresent()){
+            throw new CustomException(ALREADY_EXIST_USER);
+        }
     }
 }

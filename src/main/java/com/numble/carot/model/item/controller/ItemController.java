@@ -1,7 +1,7 @@
 package com.numble.carot.model.item.controller;
 
-import com.numble.carot.enums.Category;
-import com.numble.carot.enums.Status;
+import com.numble.carot.model.enums.Category;
+import com.numble.carot.model.enums.Status;
 import com.numble.carot.model.item.entity.dto.request.CreateItemRequestDTO;
 import com.numble.carot.model.item.entity.dto.response.ItemInfo;
 import com.numble.carot.model.item.entity.dto.response.ItemListInfo;
@@ -28,30 +28,29 @@ public class ItemController {
 
     @PostMapping
     public ResponseEntity<Long> create(Authentication authentication, @Valid @ModelAttribute CreateItemRequestDTO data) {
-        Object principal = authentication.getPrincipal();
-        Long itemId = itemService.create((User) principal, data);
+        User user = (User) authentication.getPrincipal();
+        Long itemId = itemService.create(user, data);
         return ResponseEntity.ok().body(itemId);
     }
 
     @GetMapping
-    public SliceResponseDTO<ItemListInfo> list(HttpServletRequest request, Pageable pageable){
-        /**
-         * 유저의 위치정보에 따라 보여줘야하는 Item 상이
-         * todo: 위치 정보
-         */
-        return itemService.findAllByPageable(pageable);
+    public SliceResponseDTO<ItemListInfo> list(Pageable pageable,
+                                               @RequestParam(value = "query", required = false)String query,
+                                               @RequestParam(value = "category", required = false)String category,
+                                               @RequestParam(value = "status", required = false)String status){
+        return itemService.findAllByPageable(pageable, query, category, status);
     }
 
 
-    @GetMapping("/{id}")
-    public ItemInfo findOne(Authentication authentication, @PathVariable("id")Long id){
-        Object principal = authentication.getPrincipal();
-        ItemInfo result = itemService.findOne((User) principal, id);
+    @GetMapping("/{itemId}")
+    public ItemInfo findOne(Authentication authentication, @PathVariable("itemId")Long itemId){
+        User user = (User) authentication.getPrincipal();
+        ItemInfo result = itemService.findOne(user, itemId);
         return result;
     }
 
-    @GetMapping("/{id}/list")
-    public SliceResponseDTO<ItemListInfo> userLIst(HttpServletRequest request, @PathVariable("id")Long userId, Pageable pageable){
+    @GetMapping("/{userId}/list")
+    public SliceResponseDTO<ItemListInfo> userLIst(@PathVariable("userId")Long userId, Pageable pageable){
         return itemService.findAllByUserId(userId, pageable);
     }
 
@@ -69,15 +68,8 @@ public class ItemController {
         return ResponseEntity.ok().body(itemId);
     }
 
-    /**
-     * 아직 미완..
-     * @param authentication
-     * @param id
-     * @param status
-     * @return
-     */
     @PatchMapping("/{id}/status")
-    public ResponseEntity<Long> updateOneStatus(Authentication authentication, @PathVariable("id")Long id, @Valid Status status){
+    public ResponseEntity<Long> updateOneStatus(Authentication authentication, @PathVariable("id")Long id, @RequestParam String status){
         Object principal = authentication.getPrincipal();
         Long itemId = itemService.updateOneStatus((User) principal, id, status);
         return ResponseEntity.ok().body(itemId);

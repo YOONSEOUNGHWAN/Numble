@@ -30,10 +30,10 @@ public class UserController {
         return result;
     }
 
-    @PostMapping("/profile")
-    public UserInfo updateProfile(Authentication authentication, @Valid @RequestBody ProfileUpdateRequestDTO req){
+    @PatchMapping("/profile")
+    public UserInfo updateProfile(Authentication authentication, @Valid @ModelAttribute ProfileUpdateRequestDTO req){
         Object principal = authentication.getPrincipal();
-        UserInfo result = userService.updateProfile((User) principal, req);
+        UserInfo result = userService.updateProfile((User)principal, req);
         return result;
     }
 

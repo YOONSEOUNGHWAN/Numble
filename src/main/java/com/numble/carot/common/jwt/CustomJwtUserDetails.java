@@ -10,12 +10,12 @@ import java.util.Collection;
 public class CustomJwtUserDetails implements UserDetails {
     private User user;
 
-    public User getUser() {
-        return user;
-    }
-
     public CustomJwtUserDetails(User user) {
         this.user = user;
+    }
+
+    public User getUser(){
+        return user;
     }
 
     @Override

@@ -1,8 +1,6 @@
 package com.numble.carot.model.item.entity.dto.response;
 
-import com.numble.carot.enums.Status;
 import com.numble.carot.model.item.entity.Item;
-import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;

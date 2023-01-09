@@ -1,8 +1,8 @@
 package com.numble.carot.model.item.entity;
 
 import com.numble.carot.common.aws.entity.S3Object;
-import com.numble.carot.enums.Category;
-import com.numble.carot.enums.Status;
+import com.numble.carot.model.enums.Category;
+import com.numble.carot.model.enums.Status;
 import com.numble.carot.model.BaseEntity;
 import com.numble.carot.model.item.entity.dto.request.CreateItemRequestDTO;
 import com.numble.carot.model.like.Likes;
@@ -20,6 +20,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @Builder
+
 /**
  * UUID 를 따뤄
  */

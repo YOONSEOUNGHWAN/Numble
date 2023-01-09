@@ -1,11 +1,12 @@
 package com.numble.carot.model.user.entity;
 
-import com.numble.carot.enums.Role;
+import com.numble.carot.model.enums.Role;
 import com.numble.carot.model.BaseEntity;
 import com.numble.carot.model.item.entity.Item;
 import com.numble.carot.model.like.Likes;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -56,5 +57,9 @@ public class User extends BaseEntity {
 
     public void deleteThumbnail(){
         this.thumbnail = null;
+    }
+
+    public User(Long id){
+        this.id = id;
     }
 }
