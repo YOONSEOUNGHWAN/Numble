@@ -1,5 +1,6 @@
 package com.numble.carot.model.item.entity.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.numble.carot.common.aws.entity.S3Object;
 import com.numble.carot.model.item.entity.Item;
 import com.numble.carot.model.like.Likes;
@@ -28,6 +29,7 @@ public class ItemInfo {
     private boolean isLike;
     private boolean isMine;
     private List<SubItemInfo> itemList;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
 
     @Data

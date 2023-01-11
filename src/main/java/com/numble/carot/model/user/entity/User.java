@@ -1,5 +1,6 @@
 package com.numble.carot.model.user.entity;
 
+import com.numble.carot.common.socket.Room;
 import com.numble.carot.model.enums.Role;
 import com.numble.carot.model.BaseEntity;
 import com.numble.carot.model.item.entity.Item;
@@ -43,9 +44,10 @@ public class User extends BaseEntity {
     //영속성 전이를 사용(Persist & Delete) //자식을 지우는 경우 -> persist concept 고아객체 삭제요망.
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Item> itemList = new ArrayList<>();
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Likes> likeList = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Room> roomList = new ArrayList<>();
 
     public void updateNickName(String nickName){
         this.nickName = nickName;
