@@ -22,9 +22,7 @@ public class JwtFilter extends GenericFilter{
         ContentCachingRequestWrapper wrappingRequest = new ContentCachingRequestWrapper((HttpServletRequest) request);
         ContentCachingResponseWrapper wrappingResponse = new ContentCachingResponseWrapper((HttpServletResponse) response);
         //response 사라짐. header는 안 사라짐.
-
         String token = jwtProvider.resolveToken((HttpServletRequest) request);
-
         //증명 끝. 유효성 검사만 들어감.
         if(token != null && jwtProvider.validateToken(token)){
             Authentication authentication = jwtProvider.getAuthentication(token);

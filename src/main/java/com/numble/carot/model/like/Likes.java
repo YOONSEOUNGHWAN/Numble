@@ -24,4 +24,9 @@ public class Likes extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
+
+    public Likes(User user, Item item){
+        this.user = user;
+        this.item = item;
+    }
 }

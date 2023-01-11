@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class ProfileUpdateReq {
+public class ProfileUpdateRequestDTO {
     @NotBlank(message = "필수 입력 값 입니다.")
     private String nickName;
     private MultipartFile thumbnail;

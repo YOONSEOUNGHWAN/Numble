@@ -1,10 +1,10 @@
 package com.numble.carot.model.item.entity;
 
 import com.numble.carot.common.aws.entity.S3Object;
-import com.numble.carot.enums.Category;
-import com.numble.carot.enums.Status;
+import com.numble.carot.model.enums.Category;
+import com.numble.carot.model.enums.Status;
 import com.numble.carot.model.BaseEntity;
-import com.numble.carot.model.item.entity.dto.request.CreateItemReq;
+import com.numble.carot.model.item.entity.dto.request.CreateItemRequestDTO;
 import com.numble.carot.model.like.Likes;
 import com.numble.carot.model.user.entity.User;
 import lombok.*;
@@ -20,7 +20,11 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @Builder
-public class Item extends BaseEntity {
+
+/**
+ * UUID 를 따뤄
+ */
+public class Item extends BaseEntity{
     @Id
     @GeneratedValue
     @Column(name = "item_id")
@@ -48,7 +52,7 @@ public class Item extends BaseEntity {
     private Status status;
 
 
-    public Item(User user, CreateItemReq data) {
+    public Item(User user, CreateItemRequestDTO data) {
         this.user = user;
         this.title = data.getTitle();
         this.price = data.getPrice();
@@ -57,7 +61,7 @@ public class Item extends BaseEntity {
         this.status = Status.ING;
     }
 
-    public void update(CreateItemReq data) {
+    public void update(CreateItemRequestDTO data) {
         this.title = data.getTitle();
         this.price = data.getPrice();
         this.category = Category.valueOfName(data.getCategory());
@@ -67,4 +71,5 @@ public class Item extends BaseEntity {
     public void updateStatus(Status status){
         this.status = status;
     }
+
 }

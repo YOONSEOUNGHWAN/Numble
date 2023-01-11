@@ -56,8 +56,6 @@ public class S3Service {
         List<String> collect = photoUrls.stream().map(S3Object::getFileName)
                 .map(url -> url.split("\\$")[2])
                 .collect(Collectors.toList());
-        System.out.println("collect = " + collect);
-        System.out.println(originalFilename);
         return collect.contains(originalFilename);
     }
 

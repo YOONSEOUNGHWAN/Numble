@@ -1,17 +1,15 @@
 package com.numble.carot.model.item.entity.dto.request;
 
-import com.numble.carot.enums.Category;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class CreateItemReq {
+public class CreateItemRequestDTO {
     private List<MultipartFile> files = new ArrayList<>();
     @NotBlank(message = "제목을 작성해주세요")
     private String title;

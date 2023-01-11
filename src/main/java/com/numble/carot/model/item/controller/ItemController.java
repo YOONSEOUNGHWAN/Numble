@@ -1,12 +1,17 @@
 package com.numble.carot.model.item.controller;
 
-import com.numble.carot.enums.Category;
-import com.numble.carot.enums.Status;
-import com.numble.carot.model.item.entity.dto.request.CreateItemReq;
+import com.numble.carot.model.enums.Category;
+import com.numble.carot.model.enums.Status;
+import com.numble.carot.model.item.entity.dto.request.CreateItemRequestDTO;
 import com.numble.carot.model.item.entity.dto.response.ItemInfo;
+import com.numble.carot.model.item.entity.dto.response.ItemListInfo;
+import com.numble.carot.model.item.entity.dto.response.SliceResponseDTO;
 import com.numble.carot.model.item.service.ItemService;
+import com.numble.carot.model.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,15 +27,31 @@ public class ItemController {
     private final ItemService itemService;
 
     @PostMapping
-    public ResponseEntity<Long> create(HttpServletRequest request, @Valid @ModelAttribute CreateItemReq data) {
-        Long itemId = itemService.create(request, data);
+    public ResponseEntity<Long> create(Authentication authentication, @Valid @ModelAttribute CreateItemRequestDTO data) {
+        User user = (User) authentication.getPrincipal();
+        Long itemId = itemService.create(user, data);
         return ResponseEntity.ok().body(itemId);
     }
 
-    @GetMapping("/{id}")
-    public ItemInfo findOne(HttpServletRequest request, @PathVariable("id")Long id){
-        ItemInfo result = itemService.findOne(request, id);
+    @GetMapping
+    public SliceResponseDTO<ItemListInfo> list(Pageable pageable,
+                                               @RequestParam(value = "query", required = false)String query,
+                                               @RequestParam(value = "category", required = false)String category,
+                                               @RequestParam(value = "status", required = false)String status){
+        return itemService.findAllByPageable(pageable, query, category, status);
+    }
+
+
+    @GetMapping("/{itemId}")
+    public ItemInfo findOne(Authentication authentication, @PathVariable("itemId")Long itemId){
+        User user = (User) authentication.getPrincipal();
+        ItemInfo result = itemService.findOne(user, itemId);
         return result;
+    }
+
+    @GetMapping("/{userId}/list")
+    public SliceResponseDTO<ItemListInfo> userLIst(@PathVariable("userId")Long userId, Pageable pageable){
+        return itemService.findAllByUserId(userId, pageable);
     }
 
     @GetMapping("/category")
@@ -41,29 +62,26 @@ public class ItemController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Long> updateOne(HttpServletRequest request, @PathVariable("id")Long id, @Valid @ModelAttribute CreateItemReq data){
-        Long itemId = itemService.updateOne(request, id, data);
+    public ResponseEntity<Long> updateOne(Authentication authentication, @PathVariable("id")Long id, @Valid @ModelAttribute CreateItemRequestDTO data){
+        Object principal = authentication.getPrincipal();
+        Long itemId = itemService.updateOne((User) principal, id, data);
         return ResponseEntity.ok().body(itemId);
     }
 
-    /**
-     * todo : 한글 입력시 에러가........
-     * @param request
-     * @param id
-     * @param status
-     * @return
-     */
     @PatchMapping("/{id}/status")
-    public ResponseEntity<Long> updateOneStatus(HttpServletRequest request, @PathVariable("id")Long id, @Valid Status status){
-        Long itemId = itemService.updateOneStatus(request, id, status);
+    public ResponseEntity<Long> updateOneStatus(Authentication authentication, @PathVariable("id")Long id, @RequestParam String status){
+        Object principal = authentication.getPrincipal();
+        Long itemId = itemService.updateOneStatus((User) principal, id, status);
         return ResponseEntity.ok().body(itemId);
     }
 
+    //Interceptor 애는 JSON 형식이 적용이 안됨.
+    //Object 와 문자열은 다른 개념인 것인가..? Long 은 Object 이고..?
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteOne(HttpServletRequest request, @PathVariable("id")Long id){
-        itemService.delete(request, id);
-        return ResponseEntity.ok().body("삭제완료");
+    public ResponseEntity<Object> deleteOne(Authentication authentication, @PathVariable("id")Long id){
+        Object principal = authentication.getPrincipal();
+        itemService.delete((User) principal, id);
+        return ResponseEntity.ok().body("ok");
     }
-
 
 }

@@ -3,7 +3,7 @@ package com.numble.carot.common.jwt;
 import com.numble.carot.exception.CustomException;
 import com.numble.carot.exception.ErrorCode;
 import com.numble.carot.model.user.entity.User;
-import com.numble.carot.model.user.entity.dto.request.SignUpReq;
+import com.numble.carot.model.user.entity.dto.request.SignUpRequestDTO;
 import com.numble.carot.model.user.repository.UserRepository;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
@@ -11,13 +11,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.Optional;
 
 @Component // component scan 대상 bean등록
 @Slf4j
@@ -47,12 +45,14 @@ public class JwtProvider {
     private String createToken(String payload, long expireLength) {
         Claims claims = Jwts.claims().setSubject(payload); //"sub" : "data"
         Date now = new Date();
+        System.out.println("now = " + now);
         Date validity = new Date(now.getTime() + expireLength);
+        System.out.println("validity = " + validity);
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(SignatureAlgorithm.HS256, secretKey.getBytes())
                 .compact();
     }
 
@@ -60,7 +60,7 @@ public class JwtProvider {
     private String getPayload(String token){
         try{
             return Jwts.parser()
-                    .setSigningKey(secretKey)
+                    .setSigningKey(secretKey.getBytes())
                     .parseClaimsJws(token)
                     .getBody()
                     .getSubject(); //get("sub")
@@ -79,31 +79,26 @@ public class JwtProvider {
         return null;
     }
 
-    public User getUser(HttpServletRequest request){
-        String token = resolveToken(request);
-        long id = Long.parseLong(getPayload(token));
-        return userRepository.findById(id).get();
-    }
-
     public boolean validateToken(String token){
         try{
-            Jws<Claims> claimsJws = Jwts.parser()
-                    .setSigningKey(secretKey)
-                    .parseClaimsJws(token);
-            return claimsJws.getBody().getExpiration().before(new Date());
+            Claims body = Jwts.parser()
+                    .setSigningKey(secretKey.getBytes())
+                    .parseClaimsJws(token).getBody();
+            return !body.getExpiration().before(new Date());
         }catch (JwtException | IllegalArgumentException exception){
+            //filter Exception 은 Handler 안 걸침. NullPointer 터짐.
             return false;
         }
     }
 
     public Authentication getAuthentication(String token){
-        UserDetails userDetails = customJwtUserDetailsService.loadUserByUsername(getPayload(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "",userDetails.getAuthorities());
+        CustomJwtUserDetails userDetails = customJwtUserDetailsService.loadUserByUsername(getPayload(token));
+        return new UsernamePasswordAuthenticationToken(userDetails.getUser(), "",userDetails.getAuthorities());
     }
 
 
 
-    public String createEmailSignUpToken(SignUpReq userData){
+    public String createEmailSignUpToken(SignUpRequestDTO userData){
         Claims claims = Jwts.claims();
         claims.put("userData", userData);
 
