@@ -37,6 +37,7 @@ jobs:
       run: |
         docker login -u ${{ secrets.DOCKER_ID }} -p ${{ secrets.DOCKER_PW }}
         docker build -t ${{ secrets.DOCKER_ID }}/${{ secrets.DOCKER_REPOSITORY }}:${GITHUB_SHA::7} .
+        docker push ${{ secrets.DOCKER_ID }}/${{ secrets.DOCKER_REPOSITORY }}:${GITHUB_SHA::7}
         
     - name: SSH Remote Commands
       uses: appleboy/ssh-action@v0.1.4
