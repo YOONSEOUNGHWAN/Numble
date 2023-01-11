@@ -33,14 +33,7 @@ public class UserService {
         String encode = passwordEncrypt.encode(request.getPw());
         request.setPw(encode);
 
-        User user = userRepository.save(User.builder()
-                .email(request.getEmail())
-                .password(request.getPw())
-                .userRole(Role.USER)
-                .name(request.getName())
-                .nickName(request.getNickName())
-                .phoneNumber(request.getPhone())
-                .build());
+        User user = userRepository.save(new User(request));
 
         String accessToken = jwtProvider.createAccessToken(user.getId().toString());
         String refreshToken = jwtProvider.createRefreshToken();
