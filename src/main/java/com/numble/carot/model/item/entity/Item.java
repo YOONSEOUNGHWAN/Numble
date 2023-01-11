@@ -19,8 +19,6 @@ import java.util.List;
 @DynamicUpdate
 @Getter
 @AllArgsConstructor
-@Builder
-
 /**
  * UUID 를 따뤄
  */

@@ -1,13 +1,14 @@
 package com.numble.carot.model.user.entity;
 
-import com.numble.carot.common.socket.Room;
+//import com.numble.carot.common.socket.Room;
 import com.numble.carot.model.enums.Role;
 import com.numble.carot.model.BaseEntity;
 import com.numble.carot.model.item.entity.Item;
 import com.numble.carot.model.like.Likes;
+import com.numble.carot.model.user.entity.dto.request.SignUpRequestDTO;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.lang.Nullable;
+//import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -19,7 +20,6 @@ import java.util.List;
 @AllArgsConstructor
 @DynamicUpdate //column 많으므로..
 @Getter
-@Builder
 public class User extends BaseEntity {
     @Id @GeneratedValue
     @Column(name = "user_id")
@@ -46,8 +46,9 @@ public class User extends BaseEntity {
     private List<Item> itemList = new ArrayList<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Likes> likeList = new ArrayList<>();
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Room> roomList = new ArrayList<>();
+
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Room> roomList = new ArrayList<>();
 
     public void updateNickName(String nickName){
         this.nickName = nickName;
@@ -61,7 +62,14 @@ public class User extends BaseEntity {
         this.thumbnail = null;
     }
 
-    public User(Long id){
-        this.id = id;
+
+    public User(SignUpRequestDTO request) {
+        this.name = request.getName();
+        this.nickName = request.getNickName();
+        this.email = request.getEmail();
+        this.password = request.getPw();
+        this.phoneNumber = request.getPhone();
+        this.userRole = Role.USER;
     }
+
 }
