@@ -1,5 +1,7 @@
 package com.numble.carot.common.jwt;
 
+import com.numble.carot.exception.CustomException;
+import com.numble.carot.exception.ErrorCode;
 import com.numble.carot.model.user.entity.User;
 import com.numble.carot.model.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,18 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CustomJwtUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
-
-    //Error Handling 어쩌지..?
     @Override
     public CustomJwtUserDetails loadUserByUsername(String userId) {
-        User user = userRepository.findById(Long.parseLong(userId)).orElseThrow(() -> new UsernameNotFoundException("해당 유저를 찾을 수 없습니다."));
+        User user = userRepository.findById(Long.parseLong(userId)).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
         return new CustomJwtUserDetails(user);
     }
-
-    //모든 요청마다 -> DB를 한번 타.. user 확인하려고
-    //mybatis -> cache memory
-    //DB X -> mybatis -> return
-
-    //Role 검색... -> Token...확인
-
 }

@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class ItemListInfo {
+    private Long itemId;
     private String title;
     private String url;
     private Integer price;
@@ -17,6 +18,7 @@ public class ItemListInfo {
     private LocalDateTime updateDate;
 
     public ItemListInfo(Item item){
+        this.itemId = item.getId();
         this.title = item.getTitle();
         this.url = item.getPhotoUrls().get(0).getUrl();
         this.price = item.getPrice();

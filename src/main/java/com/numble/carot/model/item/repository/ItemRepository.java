@@ -8,10 +8,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface ItemRepository extends JpaRepository<Item, Long> {
+public interface ItemRepository extends JpaRepository<Item, Long>, ItemRepositoryCustom{
     Page<Item> findAllByUserId(Long userId, Pageable pageable);
     @Override
     Page<Item> findAll(Pageable pageable);
+
+
 
 
 }

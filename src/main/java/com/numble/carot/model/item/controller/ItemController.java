@@ -1,7 +1,6 @@
 package com.numble.carot.model.item.controller;
 
 import com.numble.carot.model.enums.Category;
-import com.numble.carot.model.enums.Status;
 import com.numble.carot.model.item.entity.dto.request.CreateItemRequestDTO;
 import com.numble.carot.model.item.entity.dto.response.ItemInfo;
 import com.numble.carot.model.item.entity.dto.response.ItemListInfo;
@@ -14,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,8 +43,7 @@ public class ItemController {
     @GetMapping("/{itemId}")
     public ItemInfo findOne(Authentication authentication, @PathVariable("itemId")Long itemId){
         User user = (User) authentication.getPrincipal();
-        ItemInfo result = itemService.findOne(user, itemId);
-        return result;
+        return itemService.findOne(user, itemId);
     }
 
     @GetMapping("/{userId}/list")
