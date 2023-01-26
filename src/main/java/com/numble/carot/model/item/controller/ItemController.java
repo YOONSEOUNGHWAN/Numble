@@ -32,6 +32,7 @@ public class ItemController {
     }
 
     @GetMapping
+
     public SliceResponseDTO<ItemListInfo> list(Pageable pageable,
                                                @RequestParam(value = "query", required = false)String query,
                                                @RequestParam(value = "category", required = false)String category,

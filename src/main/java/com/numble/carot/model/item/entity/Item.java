@@ -1,6 +1,6 @@
 package com.numble.carot.model.item.entity;
 
-import com.numble.carot.common.aws.entity.S3Object;
+import com.numble.carot.common.aws.entity.FileObject;
 import com.numble.carot.model.enums.Category;
 import com.numble.carot.model.enums.Status;
 import com.numble.carot.model.BaseEntity;
@@ -43,7 +43,7 @@ public class Item extends BaseEntity{
     private Category category;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<S3Object> photoUrls = new ArrayList<>();
+    private List<FileObject> photoUrls = new ArrayList<>();
     private String text;
 
     @Enumerated(EnumType.STRING)

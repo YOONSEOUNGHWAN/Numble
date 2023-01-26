@@ -1,6 +1,6 @@
 package com.numble.carot.model.item.service;
 
-import com.numble.carot.common.aws.service.S3Service;
+import com.numble.carot.common.aws.service.ObjectService;
 import com.numble.carot.model.enums.Status;
 import com.numble.carot.exception.CustomException;
 import com.numble.carot.exception.ErrorCode;
@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ItemService {
     private final ItemRepository itemRepository;
-    private final S3Service s3Service;
+    private final ObjectService objectService;
 
     public Long create(User user, CreateItemRequestDTO data){
         Item item = new Item(user, data);
@@ -32,7 +32,7 @@ public class ItemService {
          * 논리 상 현재 순서가 맞다고 생각하기에,, 해결 방법이 없을까 고민 중.
          * UUID - 생성.
          */
-        s3Service.uploadItemFiles(data.getFiles(), item);
+        objectService.uploadItemFiles(data.getFiles(), item);
         Item save = itemRepository.save(item);
         return save.getId();
 
@@ -54,7 +54,7 @@ public class ItemService {
         //기존에 fileName을 들고 있음.. 들어오는 것과 중복 체크 하면 되려나..?
         //중복 체크 어려움 1.시간 2.UUID 둘 다 제거할 수 없음.
         //중복 체크 -> fileOriginName 으로..?
-        s3Service.uploadItemFiles(data.getFiles(), item);
+        objectService.uploadItemFiles(data.getFiles(), item);
         item.update(data);
         //변경 감지.
         Item save = itemRepository.save(item);

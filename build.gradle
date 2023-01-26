@@ -48,8 +48,8 @@ dependencies {
 	//valid
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-	//s3
-	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+//	//s3
+//	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
 	//querydsl
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"

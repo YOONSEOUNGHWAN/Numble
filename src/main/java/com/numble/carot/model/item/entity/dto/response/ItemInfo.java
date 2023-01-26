@@ -1,12 +1,11 @@
 package com.numble.carot.model.item.entity.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.numble.carot.common.aws.entity.S3Object;
+import com.numble.carot.common.aws.entity.FileObject;
 import com.numble.carot.model.item.entity.Item;
 import com.numble.carot.model.like.Likes;
 import com.numble.carot.model.user.entity.User;
 import lombok.Data;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,6 +19,7 @@ public class ItemInfo {
     private ItemUserInfo createUser;
     private Long itemId;
     private List<String> photoUrls;
+    private List<String> photoNames;
     private String status;
     private String title;
     private String text;
@@ -61,7 +61,7 @@ public class ItemInfo {
     public ItemInfo(User user, Item item){
         this.createUser = new ItemUserInfo(item.getUser());
         this.itemId = item.getId();
-        this.photoUrls = item.getPhotoUrls().stream().map(S3Object::getUrl).collect(Collectors.toList());
+        this.photoUrls = item.getPhotoUrls().stream().map(FileObject::getUrl).collect(Collectors.toList());
         this.status = item.getStatus().getName();
         this.title = item.getTitle();
         this.text = item.getText();

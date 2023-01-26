@@ -10,7 +10,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Builder
-public class S3Object {
+public class FileObject {
     @Id
     @GeneratedValue
     @Column(name = "objcet_id")

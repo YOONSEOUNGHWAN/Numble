@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing //jpa Auditing Enable(EntityListener)
 public class CarotApplication {
 	//s3
-	static {
-		System.setProperty("com.amazonaws.sdk.disableEc2Metadata", "true");
-	}
+//	static {
+//		System.setProperty("com.amazonaws.sdk.disableEc2Metadata", "true");
+//	}
 	public static void main(String[] args) {
 		SpringApplication.run(CarotApplication.class, args);
 	}
