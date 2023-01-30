@@ -28,9 +28,15 @@ public class MyInterceptor implements HandlerInterceptor {
         //wrapping 된 Response 가 넘어 올 것이다.
         final ContentCachingResponseWrapper cachingResponse = (ContentCachingResponseWrapper) response;
         //200번대 응답이 아닌 경우 Interceptor 를 거치지 않는다.
-        if(!String.valueOf(response.getStatus()).startsWith("2")){
+        if (!String.valueOf(response.getStatus()).startsWith("2")) {
             return;
         }
+
+        // Swagger API Docs는 무시
+        if (request.getRequestURI().startsWith("/v3/api-docs")) {
+            return;
+        }
+
         if (cachingResponse.getContentType() != null && (cachingResponse.getContentType().contains("application/json"))) {
             if (cachingResponse.getContentAsByteArray().length != 0) {
                 //response catch
