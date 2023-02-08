@@ -6,13 +6,19 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-@AllArgsConstructor
 @Getter
 public class ExceptionDto {
-    private final Boolean success;
+    private final boolean success;
     private final HttpStatus status;
     private final String code;
     private final String message;
+
+    public ExceptionDto(HttpStatus status, String code, String message) {
+        this.success = false;
+        this.status = status;
+        this.code = code;
+        this.message = message;
+    }
 
     public ExceptionDto(CustomException e){
         this.success = false;
