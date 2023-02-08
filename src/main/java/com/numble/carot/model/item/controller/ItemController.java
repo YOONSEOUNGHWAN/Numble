@@ -43,6 +43,7 @@ public class ItemController {
     }
 
     @Operation(summary = "상품 목록 조회", description = "상품 목록 조회 API. 샘플이므로 아직 검색 부분은 구현되어있지 않습니다.")
+    @SecurityRequirement(name = SwaggerConfig.AUTHENTICATION)
     @GetMapping
     public SliceResponseDTO<ItemListInfo> list(@ParameterObject Pageable pageable,
                                                @Parameter(description = "검색 키워드") @RequestParam(value = "query", required = false) String query,
@@ -60,12 +61,14 @@ public class ItemController {
     }
 
     @Operation(summary = "판매자의 판매 상품들 조회", description = "userId로 특정 판매자의 판매 상품 목록들을 조회하는 API")
+    @SecurityRequirement(name = SwaggerConfig.AUTHENTICATION)
     @GetMapping("/{userId}/list")
     public SliceResponseDTO<ItemListInfo> userLIst(@PathVariable("userId") Long userId, @ParameterObject Pageable pageable) {
         return itemService.findAllByUserId(userId, pageable);
     }
 
     @Operation(summary = "카테고리 조회", description = "사용가능한 상품 카테고리 목록 조회")
+    @SecurityRequirement(name = SwaggerConfig.AUTHENTICATION)
     @GetMapping("/category")
     public List<String> getCategory() {
         List<Category> collect = Stream.of(Category.values()).collect(Collectors.toList());

@@ -73,10 +73,11 @@ public class JwtProvider {
 
     public String resolveToken(HttpServletRequest request){
         String header = request.getHeader("Authorization");
-        if(StringUtils.hasText(header) && header.startsWith("Bearer ")){
-            return header.substring(7);
+        if(!StringUtils.hasText(header)){
+           return null;
         }
-        return null;
+        if(header.startsWith("Bearer ")) return header.substring(7);
+        else throw new CustomException(ErrorCode.NOT_ACCEPT_TOKEN);
     }
 
     public boolean validateToken(String token){
