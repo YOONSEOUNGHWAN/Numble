@@ -23,7 +23,7 @@ public class SecurityConfig {
 
     private static final String[] PUBLIC_URI = {
             "/swagger-ui/**", "/v3/**",
-            "/api/user/signup", "api/user/login",
+            "/api/user/signup", "/api/user/login",
     };
 
     @Bean
