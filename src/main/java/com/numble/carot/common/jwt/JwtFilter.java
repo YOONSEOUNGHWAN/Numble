@@ -33,7 +33,7 @@ public class JwtFilter extends GenericFilter {
             //response 사라짐. header는 안 사라짐.
             String token = jwtProvider.resolveToken((HttpServletRequest) request);
             //증명 끝. 유효성 검사만 들어감.
-            if(jwtProvider.validateToken(token)){
+            if(token != null && jwtProvider.validateToken(token)){
                 Authentication authentication = jwtProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }

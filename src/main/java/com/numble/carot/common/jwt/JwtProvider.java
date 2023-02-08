@@ -76,7 +76,7 @@ public class JwtProvider {
         if(StringUtils.hasText(header) && header.startsWith("Bearer ")){
             return header.substring(7);
         }
-        throw new CustomException(ErrorCode.NOT_ACCEPT_TOKEN);
+        return null;
     }
 
     public boolean validateToken(String token){
@@ -86,7 +86,6 @@ public class JwtProvider {
                     .parseClaimsJws(token).getBody();
             return !body.getExpiration().before(new Date());
         }catch (JwtException | IllegalArgumentException exception){
-
             throw new CustomException(ErrorCode.INVALID_TOKEN);
         }
     }

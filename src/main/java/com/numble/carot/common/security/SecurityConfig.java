@@ -20,6 +20,10 @@ public class SecurityConfig {
 
     private final JwtProvider jwtProvider;
 
+    private static final String[] PUBLIC_URI = {
+            "/swaggger-ui/**", "/v3/**"
+    };
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         return http
@@ -30,6 +34,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/**").permitAll()
+                .antMatchers(PUBLIC_URI).permitAll()
 //                .antMatchers("/api/user").access("hasRole('ROLE_USER')")
                 .anyRequest().permitAll()
                 .and()
