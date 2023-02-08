@@ -76,7 +76,7 @@ public class JwtProvider {
         if(StringUtils.hasText(header) && header.startsWith("Bearer ")){
             return header.substring(7);
         }
-        return null;
+        throw new CustomException(ErrorCode.NOT_ACCEPT_TOKEN);
     }
 
     public boolean validateToken(String token){
@@ -86,8 +86,8 @@ public class JwtProvider {
                     .parseClaimsJws(token).getBody();
             return !body.getExpiration().before(new Date());
         }catch (JwtException | IllegalArgumentException exception){
-            //filter Exception 은 Handler 안 걸침. NullPointer 터짐.
-            return false;
+
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
         }
     }
 

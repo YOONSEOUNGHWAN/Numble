@@ -11,6 +11,7 @@ public enum ErrorCode {
     ILLEGAL_ARGUMENT(HttpStatus.BAD_REQUEST, "잘못된 요청입니다."),
     NOT_FOUND_RESOURCE(HttpStatus.NOT_FOUND, "해당 파일을 찾을 수 없습니다."),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
+    NOT_ACCEPT_TOKEN(HttpStatus.UNAUTHORIZED, "잘못된 JWT 형식입니다."),
     INVALID_EMAIL(HttpStatus.BAD_REQUEST, "유효하지 않은 메일 형식입니다."),
     NOT_FOUND_USER(HttpStatus.BAD_REQUEST, "존재하지 않는 회원입니다."),
     ALREADY_EXIST_USER(HttpStatus.BAD_REQUEST, "이미 존재하는 유저입니다."),
