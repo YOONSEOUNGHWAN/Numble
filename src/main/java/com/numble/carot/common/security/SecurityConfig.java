@@ -22,7 +22,7 @@ public class SecurityConfig {
     private final JwtProvider jwtProvider;
 
     private static final String[] PUBLIC_URI = {
-            "/swaggger-ui/**", "/v3/**",
+            "/swagger-ui/**", "/v3/**",
             "/api/user/signup", "api/user/login",
     };
 
