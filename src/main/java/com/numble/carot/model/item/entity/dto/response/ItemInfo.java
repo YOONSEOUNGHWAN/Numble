@@ -89,7 +89,7 @@ public class ItemInfo {
         @Schema(description = "상품 id", example = "1")
         private Long itemId;
 
-        @Schema(description = "URL", example = "https://1.2.3.4/item/2")
+        @Schema(description = "URL", example = "https://1.2.3.4/item/2, nullable - 상품 이미지 없을 경우")
         private String url;
 
         @Schema(description = "제목", example = "하위 상품")
@@ -100,7 +100,11 @@ public class ItemInfo {
 
         public SubItemInfo(Item item){
             this.itemId = item.getId();
-            this.url = item.getPhotoUrls().get(0).getUrl();
+            if(item.getPhotoUrls().isEmpty()){
+                this.url = null;
+            }else{
+                this.url = item.getPhotoUrls().get(0).getUrl();
+            }
             this.title = item.getTitle();
             this.price = item.getPrice();
         }
