@@ -32,10 +32,14 @@ public class ItemListInfo {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateDate;
 
-    public ItemListInfo(Item item){
+    public ItemListInfo(Item item) {
         this.itemId = item.getId();
         this.title = item.getTitle();
-        this.url = item.getPhotoUrls().get(0).getUrl();
+        if (item.getPhotoUrls().isEmpty()) {
+            this.url = null;
+        } else {
+            this.url = item.getPhotoUrls().get(0).getUrl();
+        }
         this.price = item.getPrice();
         this.likeCount = item.getLikeList().size();
         this.status = item.getStatus().getName();
